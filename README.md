@@ -10,9 +10,6 @@ This project aimed to predict department-wide sales for 45 different stores usin
 - [Modeling Approach](#modeling-approach)
 - [Model Performance](#model-performance)
 - [Conclusion](#conclusion)
-- [How to Use](#how-to-use)
-- [Acknowledgments](#acknowledgments)
-- [License](#license)
 
 ## Objective
 
