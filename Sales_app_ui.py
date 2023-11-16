@@ -57,6 +57,7 @@ if selected_tab == "PREDICTED SALES":
 
         flag = 0
         pattern = "^(?:\d+|\d*\.\d+)$"
+        # Validation code for input fields
         for i in [MarkDown1, MarkDown2, MarkDown3, MarkDown4, MarkDown5]:
             if re.match(pattern, i):
                 pass
@@ -87,36 +88,23 @@ if selected_tab == "PREDICTED SALES":
             }
             input_data = pd.DataFrame(data)
 
+            # Load the model from the pickle file
             with open("model.pkl", 'rb') as file:
                 loaded_model = pickle.load(file)
 
             # Encoding 'IsHoliday' using LabelEncoder
             label_encoder = LabelEncoder()
-            IsHoliday_encoded = label_encoder.fit_transform(input_data['IsHoliday'])
+            input_data['IsHoliday'] = label_encoder.fit_transform(input_data['IsHoliday'])
 
             # Prepare input data for prediction
-            new_sample = np.array([[
-                int(input_data['Store']),
-                int(input_data['Dept']),
-                IsHoliday_encoded[0],
-                int(input_data['Size']),
-                int(input_data['Month']),
-                int(input_data['Year']),
-                float(input_data['MarkDown1']),
-                float(input_data['MarkDown2']),
-                float(input_data['MarkDown3']),
-                float(input_data['MarkDown4']),
-                float(input_data['MarkDown5'])
-            ]])
+            new_sample = input_data.values  # Use input_data directly as an array
 
             # Make predictions
             try:
                 new_pred = loaded_model.predict(new_sample)
-                st.write('## :red[Predicted sales:] ', np.exp(new_pred))
+                st.write('## :red[Predicted sales:] ', (new_pred))
             except Exception as e:
                 st.write('Error occurred during prediction:', str(e))
 
 st.write(f'<h6 style="color:rgb(0, 153, 153,0.35);">App Created by Nivash K </h6>', unsafe_allow_html=True)
-
-
 
